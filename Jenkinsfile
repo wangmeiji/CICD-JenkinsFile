@@ -7,13 +7,11 @@ pipeline {
       }
     }
     stage('Build') {
-      steps {
-        def mvn_version = 'M3'
-        withEnv( ["PATH+MAVEN=${tool mvn_version}/bin"] ) {
-          env.PATH = "${mvnHome}/bin:${env.PATH}"
-          sh 'mvn -B verify'
-          sh 'mvn clean compile'
-        }
+      def mvn_version = 'M3'
+      withEnv( ["PATH+MAVEN=${tool mvn_version}/bin"] ) {
+        env.PATH = "${mvnHome}/bin:${env.PATH}"
+        sh 'mvn -B verify'
+        sh 'mvn clean compile'
       }
     }
     stage('Test') {
