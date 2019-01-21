@@ -1,7 +1,9 @@
 pipeline {
   agent { label 'linux' }
-  tools {
-    maven 'maven3.6'
+  def mvn_version = 'M3'
+  withEnv( ["PATH+MAVEN=${tool mvn_version}/bin"] ) {
+  env.PATH = "${mvnHome}/bin:${env.PATH}"
+  sh 'mvn -B verify'
   }
   stages {
     stage('checkout') {
