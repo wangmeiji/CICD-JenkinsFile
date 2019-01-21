@@ -1,10 +1,5 @@
 pipeline {
   agent { label 'linux' }
-  def mvn_version = 'M3'
-  withEnv( ["PATH+MAVEN=${tool mvn_version}/bin"] ) {
-  env.PATH = "${mvnHome}/bin:${env.PATH}"
-  sh 'mvn -B verify'
-  }
   stages {
     stage('checkout') {
       steps {
@@ -13,7 +8,12 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh 'mvn clean compile'
+        def mvn_version = 'M3'
+        withEnv( ["PATH+MAVEN=${tool mvn_version}/bin"] ) {
+          env.PATH = "${mvnHome}/bin:${env.PATH}"
+          sh 'mvn -B verify'
+          sh 'mvn clean compile'
+        }
       }
     }
     stage('Test') {
