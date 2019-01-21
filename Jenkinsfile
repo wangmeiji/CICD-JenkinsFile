@@ -1,5 +1,8 @@
 pipeline {
   agent { label 'linux' }
+  tools { 
+    maven 'M3' 
+  }
   stages {
     stage('checkout') {
       steps {
@@ -7,9 +10,7 @@ pipeline {
       }
     }
     stage('Build') {
-      def mvn_version = 'M3'
-      withEnv( ["PATH+MAVEN=${tool mvn_version}/bin"] ) {
-        env.PATH = "${mvnHome}/bin:${env.PATH}"
+      steps {
         sh 'mvn -B verify'
         sh 'mvn clean compile'
       }
